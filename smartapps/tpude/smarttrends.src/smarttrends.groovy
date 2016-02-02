@@ -13,7 +13,7 @@
  *  for the specific language governing permissions and limitations under the License.
  *
  *
- *	Initial code base on example project by Jody Albrittion
+ *  Initial code base on example project by Jody Albrittion
  *	//https://github.com/jodyalbritton/api-endpoint/blob/master/api-example.groovy
  *
  */
@@ -33,8 +33,8 @@ definition(
 
 //Options for user selection in the SmartApp
 preferences {
-	pages(){
-    	section("Allow Endpoint to Control These Things...") {
+	page(name: "pageOne", title: "Log events from the following devices:", nextPage: "pageTwo", uninstall: true) {
+		section("Allow Endpoint to Control These Things...") {
 			input "switches", "capability.switch", title: "Which Switches?", multiple: true, required: false
 			input "dimmers", "capability.switchLevel", title: "Which Dimmers?", multiple: true, required: false
 			input "thermostat", "capability.thermostat", title: "Which Thermostats?", multiple: true, required: false
@@ -49,13 +49,13 @@ preferences {
 			input "batteries", "capability.battery", title: "Which Batteries?", multiple: true, required: false
 			input "powers", "capability.powerMeter", title: "Power Meters", required:false, multiple: true
 		}
-    }
-	pages(){
-    	section("Allow Endpoint to Control These Things...") {
+	}
+	page(name: "pageTwo", title: "Enter parse.com API keys", install: true, uninstall: true) {
+		section("Allow Endpoint to Control These Things...") {
 			input "restAPIKey", "text", title: "Parse.com REST API Key"
-            input "appKey", "text", title: "Parse.com API Application ID"
+			input "appKey", "text", title: "Parse.com API Application ID"
 		}
-    }
+	}
 }
 
 def installed() {
@@ -88,23 +88,22 @@ def initialize() {
 	subscribe(energys, "energy", energyEventHandler)
 	subscribe(presence, "presence", presenceEventHandler)
     
-    subscribe(thermostat, "heatingSetpoint", tstatHeatSPEventHandler)
+	subscribe(thermostat, "heatingSetpoint", tstatHeatSPEventHandler)
 	subscribe(thermostat, "coolingSetpoint", tstatCoolSPEventHandler)
-    subscribe(thermostat, "thermostatSetpoint", tstatSPEventHandler)
-    subscribe(thermostat, "thermostatMode", tstatModeEventHandler)
-    subscribe(thermostat, "thermostatFanMode", tstatFanModeEventHandler)
-    subscribe(thermostat, "thermostatOperatingState", tstatOpStateEventHandler)
+	subscribe(thermostat, "thermostatSetpoint", tstatSPEventHandler)
+	subscribe(thermostat, "thermostatMode", tstatModeEventHandler)
+	subscribe(thermostat, "thermostatFanMode", tstatFanModeEventHandler)
+	subscribe(thermostat, "thermostatOperatingState", tstatOpStateEventHandler)
 	subscribe(thermostat, "thermostatFanState", tstatFanStateEventHandler)
 }
 
 //Paths to expose endpoints for sending data from each device type
 mappings {
-
 	path("/switches") {
 		action: [
 			GET: "listSwitches"
 		]
-	}
+	}	
 	path("/switches/:id") {
 		action: [
 			GET: "showSwitch"
@@ -115,27 +114,27 @@ mappings {
 			GET: "updateSwitch"
 		]
 	}
-    path("/switches/:id/:events") {
+	path("/switches/:id/:events") {
 		action: [
 			GET: "showSwitchEvents"
 		]
 	}
-    path("/locks") {
+	path("/locks") {
 		action: [
 			GET: "listLocks"
 		]
 	}
-    path("/locks/:id") {
+	path("/locks/:id") {
 		action: [
 			GET: "showLock"
 		]
 	}
-    path("/locks/:id/:command") {
+	path("/locks/:id/:command") {
 		action: [
 			GET: "updateLock"
 		]
 	}
-    path("/dimmers") {
+	path("/dimmers") {
 		action: [
 			GET: "listDimmers"
 		]
@@ -150,12 +149,12 @@ mappings {
 			GET: "updateDimmer"
 		]
 	}
-    path("/switches/:id/:command/:level") {
+	path("/switches/:id/:command/:level") {
 		action: [
 			GET: "updateSwitch"
 		]
 	}
-    path("/motions") {
+	path("/motions") {
 		action: [
 			GET: "listMotions"
 		]
@@ -165,12 +164,12 @@ mappings {
 			GET: "showMotion"
 		]
 	}
-     path("/motions/:id/events") {
+	path("/motions/:id/events") {
 		action: [
 			GET: "showMotionEvents"
 		]
 	}
-     path("/illuminants") {
+	path("/illuminants") {
 		action: [
 			GET: "listIlluminants"
 		]
@@ -180,7 +179,7 @@ mappings {
 			GET: "showIlluminant"
 		]
 	}
-     path("/contacts") {
+	path("/contacts") {
 		action: [
 			GET: "listContacts"
 		]
@@ -190,7 +189,7 @@ mappings {
 			GET: "showContact"
 		]
 	}
-    path("/temperatures") {
+	path("/temperatures") {
 		action: [
 			GET: "listTemperatures"
 		]
@@ -200,47 +199,47 @@ mappings {
 			GET: "showTemperature"
 		]
 	}
-    path("/temperatures/:id/:command") {
+	path("/temperatures/:id/:command") {
 		action: [
 			GET: "updateTemperatures"
 		]
 	}
-    path("/humidities") {
+	path("/humidities") {
 		action: [
 			GET: "listHumidities"
 		]
 	}
-    path("/humidities/:id") {
+	path("/humidities/:id") {
 		action: [
 			GET: "showHumidity"
 		]
 	}
-    path("/batteries") {
+	path("/batteries") {
 		action: [
 			GET: "listBatteries"
 		]
 	}
-    path("/batteries/:id") {
+	path("/batteries/:id") {
 		action: [
 			GET: "showBattery"
 		]
 	}
-    path("/powers") {
+	path("/powers") {
 		action: [
 			GET: "listPowers"
 		]
 	}
-    path("/powers/:id") {
+	path("/powers/:id") {
 		action: [
 			GET: "showPower"
 		]
 	}
-    path("/energies") {
+	path("/energies") {
 		action: [
 			GET: "listEnergies"
 		]
 	}
-    path("/energies/:id") {
+	path("/energies/:id") {
 		action: [
 			GET: "showEnergy"
 		]
@@ -260,7 +259,7 @@ mappings {
 			GET: "updateThermostat"
 		]
 	}
-    path("/presence") {
+	path("/presence") {
 		action: [
 			GET: "listPresence"
 		]
@@ -337,72 +336,72 @@ def tstatFanStateEventHandler(evt) {
 //Parse.com API data transfer
 private logField(evt, Closure c) {
 	def type = "application/json"
-    def url = "https://api.parse.com/1/classes/"
+	def url = "https://api.parse.com/1/classes/"
    
-   log.debug evt.name + " Event triggered"
+	log.debug evt.name + " Event triggered"
    
 	switch (evt.name) {
-    	case "switch":
-        	httpPostJson(uri: url + "switches", headers:['content-type':type, 'x-parse-rest-api-key': restAPIKey, 'x-parse-application-id': appKey],	body:[deviceID: evt.deviceId, deviceName: evt.displayName, name: evt.name, value: evt.value, date: evt.isoDate, unit: evt.unit])
-            break
-        case "level":
-        	httpPostJson(uri: url + "dimmers", headers:['content-type':type, 'x-parse-rest-api-key': restAPIKey, 'x-parse-application-id': appKey],	body:[deviceID: evt.deviceId, deviceName: evt.displayName, name: evt.name, value: evt.value, date: evt.isoDate, unit: evt.unit])
-            break
-        case "motion":
-        	httpPostJson(uri: url + "motion", headers:['content-type':type, 'x-parse-rest-api-key': restAPIKey, 'x-parse-application-id': appKey],	body:[deviceID: evt.deviceId, deviceName: evt.displayName, name: evt.name, value: evt.value, date: evt.isoDate, unit: evt.unit])
-            break
-        case "acceleration":
-            httpPostJson(uri: url + "acceleration", headers:['content-type':type, 'x-parse-rest-api-key': restAPIKey, 'x-parse-application-id': appKey],	body:[deviceID: evt.deviceId, deviceName: evt.displayName, name: evt.name, value: evt.value, date: evt.isoDate, unit: evt.unit])
-            break
-        case "contact":
-        	httpPostJson(uri: url + "contact", headers:['content-type':type, 'x-parse-rest-api-key': restAPIKey, 'x-parse-application-id': appKey],	body:[deviceID: evt.deviceId, deviceName: evt.displayName, name: evt.name, value: evt.value, date: evt.isoDate, unit: evt.unit])
-            break
+		case "switch":
+			httpPostJson(uri: url + "switches", headers:['content-type':type, 'x-parse-rest-api-key': restAPIKey, 'x-parse-application-id': appKey],	body:[deviceID: evt.deviceId, deviceName: evt.displayName, name: evt.name, value: evt.value, date: evt.isoDate, unit: evt.unit])
+			break
+		case "level":
+			httpPostJson(uri: url + "dimmers", headers:['content-type':type, 'x-parse-rest-api-key': restAPIKey, 'x-parse-application-id': appKey],	body:[deviceID: evt.deviceId, deviceName: evt.displayName, name: evt.name, value: evt.value, date: evt.isoDate, unit: evt.unit])
+			break
+		case "motion":
+			httpPostJson(uri: url + "motion", headers:['content-type':type, 'x-parse-rest-api-key': restAPIKey, 'x-parse-application-id': appKey],	body:[deviceID: evt.deviceId, deviceName: evt.displayName, name: evt.name, value: evt.value, date: evt.isoDate, unit: evt.unit])
+			break
+		case "acceleration":
+			httpPostJson(uri: url + "acceleration", headers:['content-type':type, 'x-parse-rest-api-key': restAPIKey, 'x-parse-application-id': appKey],	body:[deviceID: evt.deviceId, deviceName: evt.displayName, name: evt.name, value: evt.value, date: evt.isoDate, unit: evt.unit])
+			break
+		case "contact":
+			httpPostJson(uri: url + "contact", headers:['content-type':type, 'x-parse-rest-api-key': restAPIKey, 'x-parse-application-id': appKey],	body:[deviceID: evt.deviceId, deviceName: evt.displayName, name: evt.name, value: evt.value, date: evt.isoDate, unit: evt.unit])
+			break
 		case "illuminance":
-        	httpPostJson(uri: url + "illuminance", headers:['content-type':type, 'x-parse-rest-api-key': restAPIKey, 'x-parse-application-id': appKey],	body:[deviceID: evt.deviceId, deviceName: evt.displayName, name: evt.name, value: evt.value, date: evt.isoDate, unit: evt.unit])
-            break
-        case "temperature":
-        	httpPostJson(uri: url + "temps", headers:['content-type':type, 'x-parse-rest-api-key': restAPIKey, 'x-parse-application-id': appKey],	body:[deviceID: evt.deviceId, deviceName: evt.displayName, name: evt.name, value: evt.value, date: evt.isoDate, unit: evt.unit])
-            break
+			httpPostJson(uri: url + "illuminance", headers:['content-type':type, 'x-parse-rest-api-key': restAPIKey, 'x-parse-application-id': appKey],	body:[deviceID: evt.deviceId, deviceName: evt.displayName, name: evt.name, value: evt.value, date: evt.isoDate, unit: evt.unit])
+			break
+		case "temperature":
+			httpPostJson(uri: url + "temps", headers:['content-type':type, 'x-parse-rest-api-key': restAPIKey, 'x-parse-application-id': appKey],	body:[deviceID: evt.deviceId, deviceName: evt.displayName, name: evt.name, value: evt.value, date: evt.isoDate, unit: evt.unit])
+			break
 		case "humidity":
-        	httpPostJson(uri: url + "humidity", headers:['content-type':type, 'x-parse-rest-api-key': restAPIKey, 'x-parse-application-id': appKey],	body:[deviceID: evt.deviceId, deviceName: evt.displayName, name: evt.name, value: evt.value, date: evt.isoDate, unit: evt.unit])
-            break            
- 		case "locks":
-        	httpPostJson(uri: url + "locks", headers:['content-type':type, 'x-parse-rest-api-key': restAPIKey, 'x-parse-application-id': appKey],	body:[deviceID: evt.deviceId, deviceName: evt.displayName, name: evt.name, value: evt.value, date: evt.isoDate, unit: evt.unit])
-            break           
+			httpPostJson(uri: url + "humidity", headers:['content-type':type, 'x-parse-rest-api-key': restAPIKey, 'x-parse-application-id': appKey],	body:[deviceID: evt.deviceId, deviceName: evt.displayName, name: evt.name, value: evt.value, date: evt.isoDate, unit: evt.unit])
+			break            
+		case "locks":
+			httpPostJson(uri: url + "locks", headers:['content-type':type, 'x-parse-rest-api-key': restAPIKey, 'x-parse-application-id': appKey],	body:[deviceID: evt.deviceId, deviceName: evt.displayName, name: evt.name, value: evt.value, date: evt.isoDate, unit: evt.unit])
+			break           
 		case "battery":
-        	httpPostJson(uri: url + "batteries", headers:['content-type':type, 'x-parse-rest-api-key': restAPIKey, 'x-parse-application-id': appKey],	body:[deviceID: evt.deviceId, deviceName: evt.displayName, name: evt.name, value: evt.value, date: evt.isoDate, unit: evt.unit])
-            break
+			httpPostJson(uri: url + "batteries", headers:['content-type':type, 'x-parse-rest-api-key': restAPIKey, 'x-parse-application-id': appKey],	body:[deviceID: evt.deviceId, deviceName: evt.displayName, name: evt.name, value: evt.value, date: evt.isoDate, unit: evt.unit])
+			break
 		case "power":
-        	httpPostJson(uri: url + "power", headers:['content-type':type, 'x-parse-rest-api-key': restAPIKey, 'x-parse-application-id': appKey],	body:[deviceID: evt.deviceId, deviceName: evt.displayName, name: evt.name, value: evt.value, date: evt.isoDate, unit: evt.unit])
-            break
+			httpPostJson(uri: url + "power", headers:['content-type':type, 'x-parse-rest-api-key': restAPIKey, 'x-parse-application-id': appKey],	body:[deviceID: evt.deviceId, deviceName: evt.displayName, name: evt.name, value: evt.value, date: evt.isoDate, unit: evt.unit])
+			break
 		case "energy":
-        	httpPostJson(uri: url + "energy", headers:['content-type':type, 'x-parse-rest-api-key': restAPIKey, 'x-parse-application-id': appKey],	body:[deviceID: evt.deviceId, deviceName: evt.displayName, name: evt.name, value: evt.value, date: evt.isoDate, unit: evt.unit])
-            break
-        case "presence":
-        	httpPostJson(uri: url + "presence", headers:['content-type':type, 'x-parse-rest-api-key': restAPIKey, 'x-parse-application-id': appKey],	body:[deviceID: evt.deviceId, deviceName: evt.displayName, name: evt.name, value: evt.value, date: evt.isoDate, unit: evt.unit])
-            break
-	    case "heatingSetpoint":
-        	httpPostJson(uri: url + "thermostats", headers:['content-type':type, 'x-parse-rest-api-key': restAPIKey, 'x-parse-application-id': appKey],	body:[deviceID: evt.deviceId, deviceName: evt.displayName, name: evt.name, value: evt.value, date: evt.isoDate, unit: evt.unit])
-            break
-        case "coolingSetpoint":
-        	httpPostJson(uri: url + "thermostats", headers:['content-type':type, 'x-parse-rest-api-key': restAPIKey, 'x-parse-application-id': appKey],	body:[deviceID: evt.deviceId, deviceName: evt.displayName, name: evt.name, value: evt.value, date: evt.isoDate, unit: evt.unit])
-            break            
-        case "thermostatSetpoint":
-        	httpPostJson(uri: url + "thermostats", headers:['content-type':type, 'x-parse-rest-api-key': restAPIKey, 'x-parse-application-id': appKey],	body:[deviceID: evt.deviceId, deviceName: evt.displayName, name: evt.name, value: evt.value, date: evt.isoDate, unit: evt.unit])
-            break            
-        case "thermostatMode":
-        	httpPostJson(uri: url + "thermostats", headers:['content-type':type, 'x-parse-rest-api-key': restAPIKey, 'x-parse-application-id': appKey],	body:[deviceID: evt.deviceId, deviceName: evt.displayName, name: evt.name, value: evt.value, date: evt.isoDate, unit: evt.unit])
-            break
-        case "thermostatFanMode":
-        	httpPostJson(uri: url + "thermostats", headers:['content-type':type, 'x-parse-rest-api-key': restAPIKey, 'x-parse-application-id': appKey],	body:[deviceID: evt.deviceId, deviceName: evt.displayName, name: evt.name, value: evt.value, date: evt.isoDate, unit: evt.unit])
-            break   
-        case "thermostatOperatingState":
-        	httpPostJson(uri: url + "thermostats", headers:['content-type':type, 'x-parse-rest-api-key': restAPIKey, 'x-parse-application-id': appKey],	body:[deviceID: evt.deviceId, deviceName: evt.displayName, name: evt.name, value: evt.value, date: evt.isoDate, unit: evt.unit])
-            break
-        case "thermostatFanState":
-        	httpPostJson(uri: url + "thermostats", headers:['content-type':type, 'x-parse-rest-api-key': restAPIKey, 'x-parse-application-id': appKey],	body:[deviceID: evt.deviceId, deviceName: evt.displayName, name: evt.name, value: evt.value, date: evt.isoDate, unit: evt.unit])
-            break            
-    }
+			httpPostJson(uri: url + "energy", headers:['content-type':type, 'x-parse-rest-api-key': restAPIKey, 'x-parse-application-id': appKey],	body:[deviceID: evt.deviceId, deviceName: evt.displayName, name: evt.name, value: evt.value, date: evt.isoDate, unit: evt.unit])
+			break
+		case "presence":
+			httpPostJson(uri: url + "presence", headers:['content-type':type, 'x-parse-rest-api-key': restAPIKey, 'x-parse-application-id': appKey],	body:[deviceID: evt.deviceId, deviceName: evt.displayName, name: evt.name, value: evt.value, date: evt.isoDate, unit: evt.unit])
+			break
+		case "heatingSetpoint":
+			httpPostJson(uri: url + "thermostats", headers:['content-type':type, 'x-parse-rest-api-key': restAPIKey, 'x-parse-application-id': appKey],	body:[deviceID: evt.deviceId, deviceName: evt.displayName, name: evt.name, value: evt.value, date: evt.isoDate, unit: evt.unit])
+			break
+		case "coolingSetpoint":
+			httpPostJson(uri: url + "thermostats", headers:['content-type':type, 'x-parse-rest-api-key': restAPIKey, 'x-parse-application-id': appKey],	body:[deviceID: evt.deviceId, deviceName: evt.displayName, name: evt.name, value: evt.value, date: evt.isoDate, unit: evt.unit])
+			break            
+		case "thermostatSetpoint":
+			httpPostJson(uri: url + "thermostats", headers:['content-type':type, 'x-parse-rest-api-key': restAPIKey, 'x-parse-application-id': appKey],	body:[deviceID: evt.deviceId, deviceName: evt.displayName, name: evt.name, value: evt.value, date: evt.isoDate, unit: evt.unit])
+			break            
+		case "thermostatMode":
+			httpPostJson(uri: url + "thermostats", headers:['content-type':type, 'x-parse-rest-api-key': restAPIKey, 'x-parse-application-id': appKey],	body:[deviceID: evt.deviceId, deviceName: evt.displayName, name: evt.name, value: evt.value, date: evt.isoDate, unit: evt.unit])
+			break
+		case "thermostatFanMode":
+			httpPostJson(uri: url + "thermostats", headers:['content-type':type, 'x-parse-rest-api-key': restAPIKey, 'x-parse-application-id': appKey],	body:[deviceID: evt.deviceId, deviceName: evt.displayName, name: evt.name, value: evt.value, date: evt.isoDate, unit: evt.unit])
+			break   
+		case "thermostatOperatingState":
+			httpPostJson(uri: url + "thermostats", headers:['content-type':type, 'x-parse-rest-api-key': restAPIKey, 'x-parse-application-id': appKey],	body:[deviceID: evt.deviceId, deviceName: evt.displayName, name: evt.name, value: evt.value, date: evt.isoDate, unit: evt.unit])
+			break
+		case "thermostatFanState":
+			httpPostJson(uri: url + "thermostats", headers:['content-type':type, 'x-parse-rest-api-key': restAPIKey, 'x-parse-application-id': appKey],	body:[deviceID: evt.deviceId, deviceName: evt.displayName, name: evt.name, value: evt.value, date: evt.isoDate, unit: evt.unit])
+			break            
+	}
 
 	log.debug evt.name+" Event data successfully posted"
 }
