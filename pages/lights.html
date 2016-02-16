@@ -1,0 +1,79 @@
+<!doctype html>
+
+<html>
+<head>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width" />
+  <title>SmartTrends</title>
+  <link href="../css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css" />
+
+</head>
+<body>
+
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand button" href="../index.html">SmartTrends</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="hidden">
+                        <a href="#page-top"></a>
+                    </li>
+                    <li class="button">
+                        <a href="../index.html">Temperature</a>
+                    </li>
+                    <li class="button">
+                        <a href="thermostat.html">Thermostat</a>
+                    </li>
+                    <li class="button">
+                        <a href="lights.html">Lights</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+	<body>
+		<div class="container-fluid">	
+			<div class="row">			
+				<div id="lights">
+					<div class="col-lg-12 text-center tempTrend">
+						<div style="width:100%; height: 500px" id="light_trend_chart"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+
+    <footer>
+        <div class="container text-center">
+            <p>Copyright &copy;  Tyler Pudenz 2016</p>
+        </div>
+    </footer>
+
+
+	<div id="scripts"></div>
+		<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+		<script src="../js/config.js"></script>
+		<script src="../js/jquery.js"></script>
+		<script src="../js/googleCharts.js"></script>
+		<script src="../js/bootstrap.min.js"></script>
+	</div>
+	
+</body>
+</html>
